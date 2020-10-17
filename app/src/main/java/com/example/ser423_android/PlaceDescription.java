@@ -16,18 +16,29 @@ package com.example.ser423_android;
 
 public class PlaceDescription {
 
-    private String name, description, category, addressTitle;
-    private String[] address;
+    private String name, description, category, address_title, address_street;
     private int elevation;
     private double lattitude, longitude;
 
-    public PlaceDescription(String name, String description, String category, String addressTitle, String[] address, int elevation, double lattitude, double longitude)
+    private String jsonSample =
+            "{\n" +
+            "\"name\" : \"ASU-Poly\",\n" +
+            "\"description\" : \"Home of ASU's Software Engineering Programs\",\n" +
+            "\"category\" : \"School\",\n" +
+            "\"address-title\" : \"ASU Software Engineering\",\n" +
+            "\"address-street\" : \"7171 E Sonoran Arroyo Mall\nPeralta Hall 230\nMesa AZ 85212\",\n" +
+            "\"elevation\" : 1384.0,\n" +
+            "\"latitude\" : 33.306388,\n" +
+            "\"longitude\" : -111.679121\n" +
+            "}";
+
+    public PlaceDescription(String name, String description, String category, String address_title, String address_street, int elevation, double lattitude, double longitude)
     {
         this.name  = name;
         this.description = description;
         this.category = category;
-        this.addressTitle = addressTitle;
-        this.address = address;
+        this.address_title = address_title;
+        this.address_street = address_street;
         this.elevation = elevation;
         this.lattitude = lattitude;
         this.longitude = longitude;
@@ -57,20 +68,20 @@ public class PlaceDescription {
         this.category = category;
     }
 
-    public String getAddressTitle() {
-        return addressTitle;
+    public String getAddress_title() {
+        return address_title;
     }
 
-    public void setAddressTitle(String addressTitle) {
-        this.addressTitle = addressTitle;
+    public void setAddress_title(String address_title) {
+        this.address_title = address_title;
     }
 
-    public String[] getAddress() {
-        return address;
+    public String getAddressStreet() {
+        return address_street;
     }
 
     public void setAddress(String[] address) {
-        this.address = address;
+        this.address_street = address_street;
     }
 
     public int getElevation() {
@@ -95,6 +106,22 @@ public class PlaceDescription {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public String toJsonString() {
+        String json = "{\n";
+
+        json += "\"name\" : \"" + this.name + "\",\n";
+        json += "\"description\" : \"" + this.description + "\",\n";
+        json += "\"category\" : \"" + this.category + "\",\n";
+        json += "\"address_title\" : \"" + this.address_title + "\",\n";
+        json += "\"address_street\" : \"" + this.address_street + "\",\n";
+        json += "\"elevation\" : \"" + this.elevation+ "\",\n";
+        json += "\"lattitude\" : \"" + this.lattitude+ "\",\n";
+        json += "\"longitude\" : \"" + this.longitude+ "\",\n";
+
+        json += "}";
+        return json;
     }
 
 
