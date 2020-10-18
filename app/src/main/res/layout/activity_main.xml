@@ -18,24 +18,144 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="10dp"
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/my_text_view"
+        android:id="@+id/name_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:text="Name: "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/name_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="test"
+        android:layout_toRightOf="@+id/name_title" />
+
+    <TextView
+        android:id="@+id/description_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description:"
+        android:layout_below="@id/name_content" />
+
+    <TextView
+        android:id="@+id/description_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/description_title"
+        android:layout_below="@+id/name_content"
+        android:text="test" />
+
+    <TextView
+        android:id="@+id/category_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Category: "
+        android:layout_below="@+id/description_content"/>
+
+    <TextView
+        android:id="@+id/category_content"
+        android:text="test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/description_content"
+        android:layout_toRightOf="@id/category_title"
+        />
+
+    <TextView
+        android:id="@+id/address_title_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address Title: "
+        android:layout_below="@+id/category_content"/>
+
+    <TextView
+        android:id="@+id/address_title_content"
+        android:text="test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/category_content"
+        android:layout_toRightOf="@id/address_title_title"
+        />
+
+    <TextView
+        android:id="@+id/address_street_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address Street: "
+        android:layout_below="@+id/address_title_content"/>
+
+    <TextView
+        android:id="@+id/address_street_content"
+        android:text="test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/address_title_content"
+        android:layout_toRightOf="@id/address_street_title"
+        />
+
+    <TextView
+        android:id="@+id/elevation_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Elevation: "
+        android:layout_below="@+id/address_street_content"/>
+
+    <TextView
+        android:id="@+id/elevation_content"
+        android:text="test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/address_street_content"
+        android:layout_toRightOf="@id/elevation_title"
+        />
+
+    <TextView
+        android:id="@+id/latitude_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Latitude: "
+        android:layout_below="@+id/elevation_content"/>
+
+    <TextView
+        android:id="@+id/latitude_content"
+        android:text="test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/elevation_content"
+        android:layout_toRightOf="@id/latitude_title"
+        />
+
+    <TextView
+        android:id="@+id/longitude_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Longitude: "
+        android:layout_below="@+id/latitude_content"/>
+
+    <TextView
+        android:id="@+id/longitude_content"
+        android:text="test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/latitude_content"
+        android:layout_toRightOf="@id/longitude_title"
+        />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/my_text_view"
+        android:layout_below="@+id/name_title"
         android:layout_marginTop="471dp"
         android:onClick="buttonClicked"
-        android:text="@string/click_me" />
+        android:text="@string/show_sample" />
 
 </RelativeLayout>

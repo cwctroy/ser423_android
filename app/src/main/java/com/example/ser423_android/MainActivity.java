@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
                     "\"longitude\" : -111.679121\n" +
                     "}";
 
-    private TextView myTV;
+    private TextView name, description, category, addressTitle, addressStreet, elevation, latitude, longitude;
     PlaceDescription PD = new PlaceDescription(jsonSample);
 
 
@@ -42,10 +42,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        myTV = (TextView) findViewById(R.id.my_text_view);
+        name = (TextView) findViewById(R.id.name_content);
+        description = (TextView) findViewById(R.id.description_content);
+        category = (TextView) findViewById(R.id.category_content);
+        addressTitle = (TextView) findViewById(R.id.address_title_content);
+        addressStreet = (TextView) findViewById(R.id.address_street_content);
+        elevation = (TextView) findViewById(R.id.elevation_content);
+        latitude = (TextView) findViewById(R.id.latitude_content);
+        longitude = (TextView) findViewById(R.id.longitude_content);
+
     }
 
     public void buttonClicked(View v) {
-       android.util.Log.d(this.getClass().getSimpleName(), PD.toString());
+       android.util.Log.d(this.getClass().getSimpleName(), "button clicked");
+       name.setText(PD.getName());
+       description.setText(PD.getDescription());
+       category.setText(PD.getCategory());
+       addressTitle.setText(PD.getAddressTitle());
+       addressStreet.setText(PD.getAddressStreet());
+       elevation.setText(String.valueOf(PD.getElevation()));
+       latitude.setText(String.valueOf(PD.getLatitude()));
+       longitude.setText(String.valueOf(PD.getLongitude()));
     }
 }
