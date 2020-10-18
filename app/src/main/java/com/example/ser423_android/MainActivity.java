@@ -22,7 +22,21 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final String jsonSample =
+            "{\n" +
+                    "\"name\" : \"ASU-Poly\",\n" +
+                    "\"description\" : \"Home of ASU's Software Engineering Programs\",\n" +
+                    "\"category\" : \"School\",\n" +
+                    "\"address-title\" : \"ASU Software Engineering\",\n" +
+                    "\"address-street\" : \"7171 E Sonoran Arroyo Mall\nPeralta Hall 230\nMesa AZ 85212\",\n" +
+                    "\"elevation\" : 1384.0,\n" +
+                    "\"latitude\" : 33.306388,\n" +
+                    "\"longitude\" : -111.679121\n" +
+                    "}";
+
     private TextView myTV;
+    PlaceDescription PD = new PlaceDescription(jsonSample);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buttonClicked(View v) {
-       android.util.Log.d(this.getClass().getSimpleName(), "button clicked");
-       myTV.setText(myTV.getText() + "ouch, ");
+       android.util.Log.d(this.getClass().getSimpleName(), PD.toString());
     }
 }

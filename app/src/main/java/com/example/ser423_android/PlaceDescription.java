@@ -14,23 +14,14 @@
 
 package com.example.ser423_android;
 
+import org.json.JSONObject;
+
 public class PlaceDescription {
 
     private String name, description, category, addressTitle, addressStreet;
     private int elevation;
     private double latitude, longitude;
 
-    private final String jsonSample =
-            "{\n" +
-            "\"name\" : \"ASU-Poly\",\n" +
-            "\"description\" : \"Home of ASU's Software Engineering Programs\",\n" +
-            "\"category\" : \"School\",\n" +
-            "\"address-title\" : \"ASU Software Engineering\",\n" +
-            "\"address-street\" : \"7171 E Sonoran Arroyo Mall\nPeralta Hall 230\nMesa AZ 85212\",\n" +
-            "\"elevation\" : 1384.0,\n" +
-            "\"latitude\" : 33.306388,\n" +
-            "\"longitude\" : -111.679121\n" +
-            "}";
 
     public PlaceDescription() {
     }
@@ -47,31 +38,19 @@ public class PlaceDescription {
         this.longitude = longitude;
     }
 
-    public PlaceDescription(String jsonString) {
-        String[] values = jsonString.split(",");
-        for (String s : values) {
-            String[] pair = s.split(":");
-            String value = pair[1].substring(1, pair[1].length() - 2);
-            if (pair[0].contains("name")) {
-                this.setName(value);
-            } else if (pair[0].contains("description")) {
-                this.setDescription(value);
-            } else if (pair[0].contains("category")) {
-                this.setCategory(value);
-            } else if (pair[0].contains("address-title")) {
-                this.setAddressTitle(value);
-            } else if (pair[0].contains("address-street")) {
-                this.setAddressStreet(value);
-            } else if (pair[0].contains("elevation")) {
-                this.setElevation(Integer.getInteger(value));
-            } else if (pair[0].contains("latitude")) {
-                this.setLatitude(Double.parseDouble(value));
-            } else if (pair[0].contains("longitude")) {
-                this.setLongitude(Double.parseDouble(value));
-            } else {
-                System.out.println("Malformed json");
-                //Custom exception here?
-            }
+    public PlaceDescription(String jsonStr) {
+        try{
+            JSONObject jo = new JSONObject(jsonStr);
+            this.name = jo.getString("name");
+            this.description = jo.getString("description");
+            this.category = jo.getString("category");
+            this.addressTitle = jo.getString("address-title");
+            this.addressStreet = jo.getString("address-street");
+            this.elevation = jo.getInt("elevation");
+            this.latitude = jo.getDouble("latitude");
+            this.longitude = jo.getDouble("longitude");
+        } catch (Exception ex){
+            android.util.Log.w(this.getClass().getSimpleName(),"error converting to/from json");
         }
     }
 
@@ -139,20 +118,24 @@ public class PlaceDescription {
         this.longitude = longitude;
     }
 
-    public String toJsonString() {
-        String json = "{\n";
-
-        json += "\"name\" : \"" + this.name + "\",\n";
-        json += "\"description\" : \"" + this.description + "\",\n";
-        json += "\"category\" : \"" + this.category + "\",\n";
-        json += "\"address-title\" : \"" + this.addressTitle + "\",\n";
-        json += "\"address-street\" : \"" + this.addressStreet + "\",\n";
-        json += "\"elevation\" : \"" + this.elevation+ "\",\n";
-        json += "\"lattitude\" : \"" + this.latitude + "\",\n";
-        json += "\"longitude\" : \"" + this.longitude+ "\",\n";
-
-        json += "}";
-        return json;
+    public String toJsonString(){
+        String ret = "";
+        try{
+            JSONObject jo = new JSONObject();
+            jo.put("name", this.name);
+            jo.put("description", this.description);
+            jo.put("category", this.category);
+            jo.put("address-title", this.addressTitle);
+            jo.put("address-street", addressStreet);
+            jo.put("elevation", this.elevation);
+            jo.put("latitude", this.latitude);
+            jo.put("longitude", this.longitude);
+            ret = jo.toString();
+        }catch (Exception ex){
+            android.util.Log.w(this.getClass().getSimpleName(),
+                    "error converting to/from json");
+        }
+        return ret;
     }
 
     public String toString() {
