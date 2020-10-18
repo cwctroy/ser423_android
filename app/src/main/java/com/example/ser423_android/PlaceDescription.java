@@ -16,11 +16,11 @@ package com.example.ser423_android;
 
 public class PlaceDescription {
 
-    private String name, description, category, address_title, address_street;
+    private String name, description, category, addressTitle, addressStreet;
     private int elevation;
-    private double lattitude, longitude;
+    private double latitude, longitude;
 
-    private String jsonSample =
+    private final String jsonSample =
             "{\n" +
             "\"name\" : \"ASU-Poly\",\n" +
             "\"description\" : \"Home of ASU's Software Engineering Programs\",\n" +
@@ -32,16 +32,47 @@ public class PlaceDescription {
             "\"longitude\" : -111.679121\n" +
             "}";
 
-    public PlaceDescription(String name, String description, String category, String address_title, String address_street, int elevation, double lattitude, double longitude)
+    public PlaceDescription() {
+    }
+    
+    public PlaceDescription(String name, String description, String category, String addressTitle, String addressStreet, int elevation, double latitude, double longitude)
     {
         this.name  = name;
         this.description = description;
         this.category = category;
-        this.address_title = address_title;
-        this.address_street = address_street;
+        this.addressTitle = addressTitle;
+        this.addressStreet = addressStreet;
         this.elevation = elevation;
-        this.lattitude = lattitude;
+        this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public PlaceDescription(String jsonString) {
+        String[] values = jsonString.split(",");
+        for (String s : values) {
+            String[] pair = s.split(":");
+            String value = pair[1].substring(1, pair[1].length() - 2);
+            if (pair[0].contains("name")) {
+                this.setName(value);
+            } else if (pair[0].contains("description")) {
+                this.setDescription(value);
+            } else if (pair[0].contains("category")) {
+                this.setCategory(value);
+            } else if (pair[0].contains("address-title")) {
+                this.setAddressTitle(value);
+            } else if (pair[0].contains("address-street")) {
+                this.setAddressStreet(value);
+            } else if (pair[0].contains("elevation")) {
+                this.setElevation(Integer.getInteger(value));
+            } else if (pair[0].contains("latitude")) {
+                this.setLatitude(Double.parseDouble(value));
+            } else if (pair[0].contains("longitude")) {
+                this.setLongitude(Double.parseDouble(value));
+            } else {
+                System.out.println("Malformed json");
+                //Custom exception here?
+            }
+        }
     }
 
     public String getName() {
@@ -68,20 +99,20 @@ public class PlaceDescription {
         this.category = category;
     }
 
-    public String getAddress_title() {
-        return address_title;
+    public String getAddressTitle() {
+        return addressTitle;
     }
 
-    public void setAddress_title(String address_title) {
-        this.address_title = address_title;
+    public void setAddressTitle(String addressTitle) {
+        this.addressTitle = addressTitle;
     }
 
     public String getAddressStreet() {
-        return address_street;
+        return addressStreet;
     }
 
-    public void setAddress(String[] address) {
-        this.address_street = address_street;
+    public void setAddressStreet(String address) {
+        this.addressStreet = addressStreet;
     }
 
     public int getElevation() {
@@ -92,12 +123,12 @@ public class PlaceDescription {
         this.elevation = elevation;
     }
 
-    public double getLattitude() {
-        return lattitude;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setLattitude(double lattitude) {
-        this.lattitude = lattitude;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
     public double getLongitude() {
@@ -114,10 +145,10 @@ public class PlaceDescription {
         json += "\"name\" : \"" + this.name + "\",\n";
         json += "\"description\" : \"" + this.description + "\",\n";
         json += "\"category\" : \"" + this.category + "\",\n";
-        json += "\"address_title\" : \"" + this.address_title + "\",\n";
-        json += "\"address_street\" : \"" + this.address_street + "\",\n";
+        json += "\"address-title\" : \"" + this.addressTitle + "\",\n";
+        json += "\"address-street\" : \"" + this.addressStreet + "\",\n";
         json += "\"elevation\" : \"" + this.elevation+ "\",\n";
-        json += "\"lattitude\" : \"" + this.lattitude+ "\",\n";
+        json += "\"lattitude\" : \"" + this.latitude + "\",\n";
         json += "\"longitude\" : \"" + this.longitude+ "\",\n";
 
         json += "}";
