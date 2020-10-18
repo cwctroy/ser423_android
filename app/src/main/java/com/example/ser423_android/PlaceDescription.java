@@ -155,6 +155,16 @@ public class PlaceDescription {
         return json;
     }
 
-
+    public String toString() {
+	String ret = "Name : " + this.name + 
+		"\nDescription: " + this.description + 
+		"\nCategory: " + this.category +
+		"\nAddress line 1: " + this.addressTitle + 
+		"\nAddress line 2: " + this.addressStreet +
+		"\nElevation: " + this.elevation +
+		"\nLatitude: " + this.latitude +
+		"\nLongitude: " + this.longitude;
+	return ret;
+    }
 
 }
