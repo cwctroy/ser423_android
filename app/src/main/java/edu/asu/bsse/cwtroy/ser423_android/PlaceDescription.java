@@ -18,7 +18,7 @@
  * @version October 2020
  */
 
-package com.example.ser423_android;
+package edu.asu.bsse.cwtroy.ser423_android;
 
 import org.json.JSONObject;
 
