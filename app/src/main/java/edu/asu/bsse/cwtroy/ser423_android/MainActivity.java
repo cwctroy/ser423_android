@@ -29,6 +29,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -43,7 +44,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ListView.OnItemClickListener, DialogInterface.OnClickListener {
 
-  private EditText nameBox, descriptionBox;
+  private EditText nameBox, descriptionBox, categoryBox, addressTitleBox, addressStreetBox, elevationBox, latitudeBox, longitudeBox;
   private ListView pdLV;
   private PlaceLibrary collection;
   private String[] pdNames;
@@ -102,6 +103,19 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
   }
 
   @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    android.util.Log.d(this.getClass().getSimpleName(), "called onOptionsItemSelected()");
+    switch (item.getItemId()) {
+      case R.id.action_add:
+        android.util.Log.d(this.getClass().getSimpleName(),"onOptionsItemSelected -> add");
+        this.newPlaceDescriptionAlert();
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
+  }
+
+  @Override
   public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
     String[] pdNames = collection.getNames();
     Arrays.sort(pdNames);
@@ -124,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
     pdLV.setOnItemClickListener(this);
   }
 
-  private void newPlaceDescripitonAlert() {
+  private void newPlaceDescriptionAlert() {
     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
     dialog.setTitle("PlaceDescription name");
     LinearLayout layout = new LinearLayout(this);
@@ -133,15 +147,43 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
     this.nameBox = new EditText(this);
     nameBox.setHint("Name");
     layout.addView(nameBox);
+    nameBox.setInputType(InputType.TYPE_CLASS_TEXT);
 
-    this.nameBox = new EditText(this);
-    nameBox.setHint("Name");
-    nameBox.setInputType(InputType.TYPE_CLASS_NUMBER);
-    layout.addView(nameBox);
     this.descriptionBox = new EditText(this);
     descriptionBox.setHint("Description");
-    nameBox.setInputType(InputType.TYPE_CLASS_NUMBER);
+    nameBox.setInputType(InputType.TYPE_CLASS_TEXT);
     layout.addView(descriptionBox);
+
+    this.categoryBox = new EditText(this);
+    categoryBox.setHint("Category");
+    categoryBox.setInputType(InputType.TYPE_CLASS_TEXT);
+    layout.addView(categoryBox);
+
+    this.addressTitleBox = new EditText(this);
+    addressTitleBox.setHint("Address Title");
+    addressTitleBox.setInputType(InputType.TYPE_CLASS_TEXT);
+    layout.addView(addressTitleBox);
+
+    this.addressStreetBox = new EditText(this);
+    addressStreetBox.setHint("Address Street");
+    addressStreetBox.setInputType(InputType.TYPE_CLASS_TEXT);
+    layout.addView(addressStreetBox);
+
+    this.elevationBox = new EditText(this);
+    elevationBox.setHint("Elevation");
+    elevationBox.setInputType(InputType.TYPE_CLASS_NUMBER);
+    layout.addView(elevationBox);
+
+    this.latitudeBox = new EditText(this);
+    latitudeBox.setHint("Latitude");
+    latitudeBox.setInputType(InputType.TYPE_CLASS_NUMBER);
+    layout.addView(latitudeBox);
+
+    this.longitudeBox = new EditText(this);
+    longitudeBox.setHint("Longitude");
+    longitudeBox.setInputType(InputType.TYPE_CLASS_NUMBER);
+    layout.addView(longitudeBox);
+
     dialog.setView(layout);
     dialog.setNegativeButton("Cancel", this);
     dialog.setPositiveButton("Add", this);
@@ -156,12 +198,21 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
 
       String nameInput = nameBox.getText().toString().equals("") ? "blank" : nameBox.getText().toString();
       String descriptionInput = descriptionBox.getText().toString().equals("") ? "blank" : descriptionBox.getText().toString();
-      PlaceDescription pd = new PlaceDescription();
-      pd.setName(nameInput);
-      pd.setDescription(descriptionInput);
-      collection.add(new PlaceDescription());
+      String categoryInput = categoryBox.getText().toString().equals("") ? "blank" : nameBox.getText().toString();
+      String addressTitleInput = addressTitleBox.getText().toString().equals("") ? "blank" : nameBox.getText().toString();
+      String addressStreetInput = addressStreetBox.getText().toString().equals("") ? "blank" : nameBox.getText().toString();
+      String elevationInput = addressStreetBox.getText().toString().equals("") ? "0" : nameBox.getText().toString();
+      String latitudeInput = latitudeBox.getText().toString().equals("") ? "0" : nameBox.getText().toString();
+      String longitudeInput = longitudeBox.getText().toString().equals("") ? "0" : nameBox.getText().toString();
+
+      PlaceDescription pd = new PlaceDescription(
+              nameInput, descriptionInput, categoryInput, addressTitleInput, addressStreetInput,
+              Integer.parseInt(elevationInput), Integer.parseInt(latitudeInput), Integer.parseInt(longitudeInput)
+      );
+
+      collection.add(pd);
       prepareAdapter();
-      SimpleAdapter sa = new SimpleAdapter(this, fillMaps, R.layout.pd_display, colLabels, colIds);
+      SimpleAdapter sa = new SimpleAdapter(this, fillMaps, R.layout.pd_list_item, colLabels, colIds);
       pdLV.setAdapter(sa);
     }
   }
