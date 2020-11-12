@@ -15,14 +15,16 @@
  * @author Cameron Troy, cwtroy@asu.edu
  * Software Engineering, CIDSE, ASU Poly
  *
- * @version October 2020
+ * @version November 2020
  */
 
 package edu.asu.bsse.cwtroy.ser423_android;
 
 import org.json.JSONObject;
 
-public class PlaceDescription {
+import java.io.Serializable;
+
+public class PlaceDescription implements Serializable {
 
     private String name, description, category, addressTitle, addressStreet;
     private int elevation;
@@ -30,6 +32,14 @@ public class PlaceDescription {
 
 
     public PlaceDescription() {
+        this.name = "";
+        this.description = "";
+        this.category = "";
+        this.addressTitle = "";
+        this.addressStreet = "";
+        this.elevation = 0;
+        this.latitude = 0;
+        this.longitude = 0;
     }
     
     public PlaceDescription(String name, String description, String category, String addressTitle, String addressStreet, int elevation, double latitude, double longitude)

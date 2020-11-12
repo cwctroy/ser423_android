@@ -15,10 +15,32 @@
   @author Cameron Troy, cwtroy@asu.edu
   Software Engineering, CIDSE, ASU Poly
 
-  @version October 2020
+  @version November 2020
  -->
 
 <resources>
+
+    <!--  Homepage -->
     <string name="app_name">ser423_android</string>
     <string name="show_sample">Show sample</string>
+
+    <!-- View titles -->
+    <string name="location_list_header">Locations</string>
+
+    <!-- Column Headers -->
+    <string name="pd_name">Place Name</string>
+    <string name="pd_description">Description</string>
+
+    <!-- Attribute Labels -->
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="action_add">Add</string>
+    <string name="action_remove">Remove</string>
+    <string name="category">Category</string>
+    <string name="address_title">Address Line 1</string>
+    <string name="address_street">Address Line 2</string>
+    <string name="elevation">Elevation</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+
 </resources>
