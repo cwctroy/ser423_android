@@ -198,16 +198,16 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
 
       String nameInput = nameBox.getText().toString().equals("") ? "blank" : nameBox.getText().toString();
       String descriptionInput = descriptionBox.getText().toString().equals("") ? "blank" : descriptionBox.getText().toString();
-      String categoryInput = categoryBox.getText().toString().equals("") ? "blank" : nameBox.getText().toString();
-      String addressTitleInput = addressTitleBox.getText().toString().equals("") ? "blank" : nameBox.getText().toString();
-      String addressStreetInput = addressStreetBox.getText().toString().equals("") ? "blank" : nameBox.getText().toString();
-      String elevationInput = addressStreetBox.getText().toString().equals("") ? "0" : nameBox.getText().toString();
-      String latitudeInput = latitudeBox.getText().toString().equals("") ? "0" : nameBox.getText().toString();
-      String longitudeInput = longitudeBox.getText().toString().equals("") ? "0" : nameBox.getText().toString();
+      String categoryInput = categoryBox.getText().toString().equals("") ? "blank" : categoryBox.getText().toString();
+      String addressTitleInput = addressTitleBox.getText().toString().equals("") ? "blank" : addressTitleBox.getText().toString();
+      String addressStreetInput = addressStreetBox.getText().toString().equals("") ? "blank" : addressStreetBox.getText().toString();
+      String elevationInput = elevationBox.getText().toString().equals("") ? "0" : elevationBox.getText().toString();
+      String latitudeInput = latitudeBox.getText().toString().equals("") ? "0" : latitudeBox.getText().toString();
+      String longitudeInput = longitudeBox.getText().toString().equals("") ? "0" : longitudeBox.getText().toString();
 
       PlaceDescription pd = new PlaceDescription(
               nameInput, descriptionInput, categoryInput, addressTitleInput, addressStreetInput,
-              Integer.parseInt(elevationInput), Integer.parseInt(latitudeInput), Integer.parseInt(longitudeInput)
+              Integer.parseInt(elevationInput), Double.parseDouble(latitudeInput), Double.parseDouble(longitudeInput)
       );
 
       collection.add(pd);

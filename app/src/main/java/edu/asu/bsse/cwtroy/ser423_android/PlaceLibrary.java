@@ -37,7 +37,7 @@ public class PlaceLibrary implements Serializable {
   private Hashtable<String, PlaceDescription> list;
 
   public PlaceLibrary(Activity parent) {
-    list = new Hashtable<String, PlaceDescription>();
+    list = new Hashtable<>();
     try {
       this.resetFromJsonFile(parent);
     } catch (Exception e) {
