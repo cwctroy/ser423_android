@@ -21,78 +21,39 @@
 package edu.asu.bsse.cwtroy.ser423_android;
 
 import android.app.Activity;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
-import org.json.JSONObject;
-import org.json.JSONTokener;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.Hashtable;
-import java.util.Iterator;
 
-public class PlaceLibrary implements Serializable {
+public class PlaceLibrary extends AppCompatActivity implements Serializable {
 
   private Hashtable<String, PlaceDescription> list;
 
-  public PlaceLibrary(Activity parent) {
+  public PlaceLibrary() {
     list = new Hashtable<>();
-    try {
-      this.resetFromJsonFile(parent);
-    } catch (Exception e) {
-      log("Error resetting place descriptions from json file" + e.getMessage());
-    }
   }
 
   public void log(String message) {
-    android.util.Log.d(this.getClass().getSimpleName(), message);
+    android.util.Log.d(this.getClass().getSimpleName(), "manual logging: " + message);
   }
 
-  public boolean resetFromJsonFile(Activity parent) {
-    boolean ret = true;
-    try {
-      list.clear();
-      InputStream is = parent.getApplicationContext().getResources().openRawResource(R.raw.locations);
-      BufferedReader br = new BufferedReader(new InputStreamReader(is));
-      // note that the json is in a multiple lines of input so need to read line-by-line
-      StringBuffer sb = new StringBuffer();
-      while (br.ready()) {
-        sb.append(br.readLine());
-      }
-      String placesJsonStr = sb.toString();
-      JSONObject placesJson = new JSONObject(new JSONTokener(placesJsonStr));
-      Iterator<String> it = placesJson.keys();
-      while (it.hasNext()) {
-        String pName = it.next();
-        JSONObject place = placesJson.optJSONObject(pName);
-        log(pName + " json is: " + place.toString());
-        if (place != null) {
-          PlaceDescription pd = new PlaceDescription(place.toString());
-          list.put(pName, pd);
-        }
-      }
-    } catch (Exception ex) {
-      log("Exception reading json file: " + ex.getMessage());
-      ret = false;
-    }
-    return ret;
-  }
 
-  public boolean add(PlaceDescription pd) {
-    boolean ret = true;
+  public void add(PlaceDescription pd) {
     log("adding placeDescription: " + ((pd == null) ? "unknown" : pd.getName()));
     try {
       list.put(pd.getName(), pd);
     } catch (Exception ex) {
-      ret = false;
     }
-    return ret;
   }
 
-  public boolean remove(String pName) {
+  public void remove(String pName) {
     log("removing placeDescription: " + pName);
-    return (list.remove(pName) != null);
+    list.remove(pName);
   }
 
   public String[] getNames() {
@@ -111,5 +72,10 @@ public class PlaceLibrary implements Serializable {
       ret = pd;
     }
     return ret;
+  }
+
+  public void clear() {
+    log("Emptying collection");
+    list.clear();
   }
 }

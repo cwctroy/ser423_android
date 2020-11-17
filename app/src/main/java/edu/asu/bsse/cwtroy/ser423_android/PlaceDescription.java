@@ -154,6 +154,7 @@ public class PlaceDescription implements Serializable {
         return ret;
     }
 
+    @Override
     public String toString() {
 	String ret = "Name : " + this.name + 
 		"\nDescription: " + this.description + 
@@ -164,6 +165,21 @@ public class PlaceDescription implements Serializable {
 		"\nLatitude: " + this.latitude +
 		"\nLongitude: " + this.longitude;
 	return ret;
+    }
+
+    public String toSQLString() {
+        String ret = "";
+
+        ret += "\"" + this.getName() + "\",";
+        ret += "\"" + this.getDescription() + "\",";
+        ret += "\"" + this.getCategory() + "\",";
+        ret += "\"" + this.getAddressTitle() + "\",";
+        ret += "\"" + this.getAddressStreet() + "\",";
+        ret += this.getElevation() + ",";
+        ret += this.getLatitude() + ",";
+        ret += this.getLongitude() + "";
+
+        return ret;
     }
 
 }

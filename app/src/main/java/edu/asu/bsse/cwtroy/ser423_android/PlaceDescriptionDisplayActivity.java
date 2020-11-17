@@ -63,7 +63,7 @@ public class PlaceDescriptionDisplayActivity extends AppCompatActivity implement
 
     Intent intent = getIntent();
     collection = intent.getSerializableExtra("PlaceDescriptions")!=null ? (PlaceLibrary)intent.getSerializableExtra("PlaceDescriptions") :
-            new PlaceLibrary(this);
+            new PlaceLibrary();
     selectedPd = intent.getStringExtra("selected")!=null ? intent.getStringExtra("selected") : "unknown";
     PlaceDescription pd = collection.get(selectedPd);
     pd_nameTV.setText(pd.getName());
@@ -110,124 +110,18 @@ public class PlaceDescriptionDisplayActivity extends AppCompatActivity implement
         this.setResult(RESULT_OK,i);
         finish();
         return true;
-      // the user selected the action (garbage can) to remove the student
+      // the user selected the action (garbage can) to remove the place description
       case R.id.action_remove:
         android.util.Log.d(this.getClass().getSimpleName(),"onOptionsItemSelected -> remove");
-        this.removeStudentAlert();
+        this.removePlaceDescriptionAlert();
         return true;
       default:
         return super.onOptionsItemSelected(item);
     }
   }
 
-//  private void prepareAdapter(){
-//    colLabels = this.getResources().getStringArray(R.array.col_header_course);
-//    colIds = new int[] {R.id.course_prefix, R.id.course_title};
-//    Student aStud = students.get(selectedStud);
-//
-//    // the model
-//    // first row is header strings for the columns
-//    fillMaps = new ArrayList<HashMap<String,String>>();
-//    HashMap<String,String> titles = new HashMap<>();
-//    titles.put("Prefix","Prefix");
-//    titles.put("Title","Title");
-//    fillMaps.add(titles);
-//    // now add the data for the remaining rows
-//    Vector<Course> takes = this.sortTakes(aStud.takes);
-//    for (int i = 0; i < takes.size(); i++) {
-//      Course aCourse = takes.get(i);
-//      HashMap<String,String> map = new HashMap<>();
-//      Log.d(this.getClass().getSimpleName(),"mapping: "+aCourse.prefix+" "+aCourse.title);
-//      map.put("Prefix", aCourse.prefix);
-//      map.put("Title", aCourse.title);
-//      fillMaps.add(map);
-//    }
-//  }
-
-  //listview.onitemclicklistener method
-  // log the selection when its not the header row.
-//  @Override
-//  public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-//    Student aStud = students.get(selectedStud);
-//    if (position > 0 && position < aStud.takes.size()+1) {
-//      String prefix = aStud.takes.get(position - 1).prefix;
-//      String title = aStud.takes.get(position - 1).title;
-//      android.util.Log.d(this.getClass().getSimpleName(), "in method onItemClick. selected: " +
-//              prefix + " " + title);
-//    }
-//  }
-
-  // AdapterView.OnItemSelectedListener method. Called when spinner selection Changes
-//  @Override
-//  public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//    this.selectedCourse = courseSpinner.getSelectedItem().toString();
-//    android.util.Log.d(this.getClass().getSimpleName(),"Spinner item "+
-//            courseSpinner.getSelectedItem().toString() + " selected.");
-//  }
-
-  // AdapterView.OnItemSelectedListener method. Called when spinner selection Changes
-//  @Override
-//  public void onNothingSelected(AdapterView<?> parent) {
-//    android.util.Log.d(this.getClass().getSimpleName(),"In onNothingSelected: No item selected");
-//
-//  }
-
-  // returns -1 if the course prefix is not found in takes. Otherwise, the index into the vector
-  // where it is found.
-//  private int findPrefix(Vector<Course> takes, String prefix) {
-//    int ret = -1;
-//    for(int i=0; i<takes.size(); i++){
-//      Course aCrs = takes.get(i);
-//      if (aCrs.prefix.equalsIgnoreCase(prefix)){
-//        ret = i;
-//      }
-//    }
-//    return ret;
-//  }
-
-  // add the course selected from all courses spinner from the student's takes, if not already present
-//  public void addClicked (View v) {
-//    // the course is not unknown and then the course isn't already in takes
-//    if(!this.selectedCourse.equalsIgnoreCase("unknown") &&
-//            this.findPrefix(students.get(this.selectedStud).takes,this.selectedCourse)<0){
-//      Course aCourse = new Course(this.selectedCourse,
-//              availTitles[Arrays.asList(availPrefixes).indexOf(this.selectedCourse)]);
-//      (students.get(this.selectedStud).takes).add(aCourse);
-//    }
-//    this.prepareAdapter();
-//    SimpleAdapter sa = new SimpleAdapter(this, fillMaps, R.layout.course_list_item, colLabels, colIds);
-//    courseLV.setAdapter(sa);
-//
-//  }
-
-  // remove the course selected from all courses spinner from the student's takes, if present
-//  public void removeClicked (View v) {
-//    int isWhere = this.findPrefix(students.get(this.selectedStud).takes,this.selectedCourse);
-//    // the course is not unknown and then the course is in takes
-//    if(!this.selectedCourse.equalsIgnoreCase("unknown") && isWhere > -1){
-//      students.get(this.selectedStud).takes.remove(isWhere);
-//    }
-//    this.prepareAdapter();
-//    SimpleAdapter sa = new SimpleAdapter(this, fillMaps, R.layout.course_list_item, colLabels, colIds);
-//    courseLV.setAdapter(sa);
-//  }
-
-  // sort ascending the vector of courses by their prefix
-//  private Vector<Course> sortTakes(Vector<Course> takes){
-//    Vector<Course> ret = takes;
-//    for(int i=0; i<ret.size(); i++){
-//      for(int j=i+1; j<ret.size(); j++){
-//        if(ret.get(i).prefix.compareTo(ret.get(j).prefix) > 0){
-//          Course tmp = ret.remove(j);
-//          ret.add(i,tmp);
-//        }
-//      }
-//    }
-//    return ret;
-//  }
-
-  // show an alert view for the user to confirm removing the selected student
-  private void removeStudentAlert() {
+  // show an alert view for the user to confirm removing the selected place description
+  private void removePlaceDescriptionAlert() {
     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
     dialog.setTitle("Remove place description "+this.selectedPd+"?");
     dialog.setNegativeButton("Cancel", this);
@@ -244,6 +138,7 @@ public class PlaceDescriptionDisplayActivity extends AppCompatActivity implement
     if(whichButton == DialogInterface.BUTTON_POSITIVE) {
       // ok, so remove the student and return the modified model to main activity
       collection.remove(this.selectedPd);
+
       Intent i = new Intent();
       i.putExtra("Places", collection);
       this.setResult(RESULT_OK,i);

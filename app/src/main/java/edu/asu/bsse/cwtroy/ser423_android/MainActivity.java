@@ -22,8 +22,11 @@ package edu.asu.bsse.cwtroy.ser423_android;
 import android.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
 
   private EditText nameBox, descriptionBox, categoryBox, addressTitleBox, addressStreetBox, elevationBox, latitudeBox, longitudeBox;
   private ListView pdLV;
-  private PlaceLibrary collection;
+  private PlaceLibrary collection = new PlaceLibrary();
   private String[] pdNames;
 
   private String[] colLabels;
@@ -59,9 +62,7 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
     setContentView(R.layout.activity_main);
     pdLV = findViewById(R.id.pd_list_view);
 
-    Intent intent = getIntent();
-    collection = intent.getSerializableExtra("PlaceDescriptions")!=null ? (PlaceLibrary)intent.getSerializableExtra("PlaceDescriptions") :
-            new PlaceLibrary(this);
+    populateCollectionFromDB();
     pdNames = collection.getNames();
 
     this.prepareAdapter();
@@ -210,11 +211,51 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
               Integer.parseInt(elevationInput), Double.parseDouble(latitudeInput), Double.parseDouble(longitudeInput)
       );
 
-      collection.add(pd);
+      addToDatabase(pd);
       prepareAdapter();
       SimpleAdapter sa = new SimpleAdapter(this, fillMaps, R.layout.pd_list_item, colLabels, colIds);
       pdLV.setAdapter(sa);
     }
+  }
+
+  private void addToDatabase(PlaceDescription pd) {
+    log("Adding pd: " + pd.getName() + " no database");
+    PlaceDescriptionDB db = new PlaceDescriptionDB(this);
+    SQLiteDatabase placeDB = db.openDB();
+    String insert = "insert into places values (" + pd.toSQLString() + ");";
+    placeDB.execSQL(insert);
+    populateCollectionFromDB();
+  }
+
+  private void populateCollectionFromDB() {
+    log("initializing collection from database");
+    PlaceDescriptionDB db = new PlaceDescriptionDB(this);
+    SQLiteDatabase placeDB = db.openDB();
+    Cursor cur = placeDB.rawQuery("select * from places", new String[]{});
+    collection.clear();
+    while(cur.moveToNext()){
+      try {
+        PlaceDescription pd = new PlaceDescription();
+        pd.setName(cur.getString(0));
+        pd.setDescription(cur.getString(1));
+        pd.setCategory(cur.getString(2));
+        pd.setAddressTitle(cur.getString(3));
+        pd.setAddressStreet(cur.getString(4));
+        pd.setElevation(cur.getInt(5));
+        pd.setLatitude(cur.getDouble(6));
+        pd.setLongitude(cur.getDouble(7));
+        log("Adding place description from DB: " + pd.toString());
+        collection.add(pd);
+      } catch(Exception ex) {
+        android.util.Log.w(this.getClass().getSimpleName(),"exception stepping through cursor"+ex.getMessage());
+      }
+    }
+    cur.close();
+
+  }
+
+  public void log(String message) {
+    android.util.Log.d(this.getClass().getSimpleName(), "manual logging: " + message);
   }
 
 }
