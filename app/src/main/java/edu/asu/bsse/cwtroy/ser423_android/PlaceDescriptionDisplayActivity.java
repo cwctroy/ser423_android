@@ -23,6 +23,7 @@ package edu.asu.bsse.cwtroy.ser423_android;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -136,7 +137,12 @@ public class PlaceDescriptionDisplayActivity extends AppCompatActivity implement
     android.util.Log.d(this.getClass().getSimpleName(),"onClick positive button? "+
             (whichButton==DialogInterface.BUTTON_POSITIVE));
     if(whichButton == DialogInterface.BUTTON_POSITIVE) {
-      // ok, so remove the student and return the modified model to main activity
+      log("Deleting place: " + this.selectedPd);
+      PlaceDescriptionDB db = new PlaceDescriptionDB(this);
+      SQLiteDatabase placeDB = db.openDB();
+      String delete = "DELETE FROM places where places.name = \"" + this.selectedPd + "\";";
+      placeDB.execSQL(delete);
+      db.close();
       collection.remove(this.selectedPd);
 
       Intent i = new Intent();
@@ -146,4 +152,7 @@ public class PlaceDescriptionDisplayActivity extends AppCompatActivity implement
     }
   }
 
+  public void log(String message) {
+    android.util.Log.d(this.getClass().getSimpleName(), "manual logging: " + message);
+  }
 }
