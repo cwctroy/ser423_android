@@ -131,8 +131,9 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
 
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    collection = (data != null && data.getSerializableExtra("Places") != null) ?
-            (PlaceLibrary) data.getSerializableExtra("Places") : collection;
+    populateCollectionFromDB();
+//    collection = (data != null && data.getSerializableExtra("Places") != null) ?
+//            (PlaceLibrary) data.getSerializableExtra("Places") : collection;
     this.prepareAdapter();
     SimpleAdapter sa = new SimpleAdapter(this, fillMaps, R.layout.pd_list_item, colLabels, colIds);
     pdLV.setAdapter(sa);
