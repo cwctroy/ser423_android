@@ -131,7 +131,7 @@ public class PlaceDescriptionDisplayActivity extends AppCompatActivity implement
   }
 
   // DialogInterface.onClickListener method. Gets called when negative or positive button is clicked
-  // in the Alert Dialog created by the newStudentAlert method.
+  // in the Alert Dialog created by the newPlaceDescriptionAlert method.
   @Override
   public void onClick(DialogInterface dialog, int whichButton) {
     android.util.Log.d(this.getClass().getSimpleName(),"onClick positive button? "+

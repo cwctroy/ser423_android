@@ -178,12 +178,12 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
 
     this.latitudeBox = new EditText(this);
     latitudeBox.setHint("Latitude");
-    latitudeBox.setInputType(InputType.TYPE_CLASS_NUMBER);
+    latitudeBox.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
     layout.addView(latitudeBox);
 
     this.longitudeBox = new EditText(this);
     longitudeBox.setHint("Longitude");
-    longitudeBox.setInputType(InputType.TYPE_CLASS_NUMBER);
+    longitudeBox.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
     layout.addView(longitudeBox);
 
     dialog.setView(layout);
