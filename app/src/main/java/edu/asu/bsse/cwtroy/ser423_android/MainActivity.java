@@ -22,7 +22,6 @@ package edu.asu.bsse.cwtroy.ser423_android;
 import android.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -106,14 +105,12 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     android.util.Log.d(this.getClass().getSimpleName(), "called onOptionsItemSelected()");
-    switch (item.getItemId()) {
-      case R.id.action_add:
-        android.util.Log.d(this.getClass().getSimpleName(),"onOptionsItemSelected -> add");
-        this.newPlaceDescriptionAlert();
-        return true;
-      default:
-        return super.onOptionsItemSelected(item);
+    if (item.getItemId() == R.id.action_add) {
+      Log.d(this.getClass().getSimpleName(), "onOptionsItemSelected -> add");
+      this.newPlaceDescriptionAlert();
+      return true;
     }
+    return super.onOptionsItemSelected(item);
   }
 
   @Override

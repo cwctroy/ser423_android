@@ -28,12 +28,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 
 public class PlaceDescriptionDisplayActivity extends AppCompatActivity implements
@@ -42,11 +42,8 @@ public class PlaceDescriptionDisplayActivity extends AppCompatActivity implement
   private PlaceLibrary collection;
   private TextView pd_nameTV, pd_descriptionTV, pd_categoryTV, pd_addressTitleTV, pd_addressStreetTV;
   private TextView pd_elevationTV, pd_latitudeTV, pd_longitudeTV;
+  private Button saveButton;
   private String selectedPd;
-
-  private String[] colLabels;
-  private int[] colIds;
-  private List<HashMap<String,String>> fillMaps;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +58,7 @@ public class PlaceDescriptionDisplayActivity extends AppCompatActivity implement
     pd_latitudeTV = findViewById(R.id.latitude_detail);
     pd_longitudeTV = findViewById(R.id.longitude_detail);
 
+    saveButton = findViewById(R.id.save_button);
 
     Intent intent = getIntent();
     collection = intent.getSerializableExtra("PlaceDescriptions")!=null ? (PlaceLibrary)intent.getSerializableExtra("PlaceDescriptions") :
@@ -72,7 +70,7 @@ public class PlaceDescriptionDisplayActivity extends AppCompatActivity implement
     pd_categoryTV.setText(pd.getCategory());
     pd_addressTitleTV.setText(pd.getAddressTitle());
     pd_addressStreetTV.setText(pd.getAddressStreet());
-    pd_elevationTV.setText("" + pd.getElevation());
+    pd_elevationTV.setText((String.valueOf(pd.getElevation())));
     pd_latitudeTV.setText(Double.toString(pd.getLatitude()));
     pd_longitudeTV.setText(Double.toString(pd.getLongitude()));
 
@@ -83,6 +81,39 @@ public class PlaceDescriptionDisplayActivity extends AppCompatActivity implement
       android.util.Log.d(this.getClass().getSimpleName(),"exception action bar: "+ex.getLocalizedMessage());
     }
     setTitle("Place Description");
+  }
+
+  public void buttonClicked(View v) {
+    android.util.Log.d(this.getClass().getSimpleName(), "PlaceDescription updated");
+    //Remove old placeDescription
+    PlaceDescriptionDB db = new PlaceDescriptionDB(this);
+    SQLiteDatabase placeDB = db.openDB();
+    String delete = "DELETE FROM places where places.name = \"" + this.selectedPd + "\";";
+    placeDB.execSQL(delete);
+    collection.remove(this.selectedPd);
+
+    //create new one with updated data
+    String nameInput = pd_nameTV.getText().toString().equals("") ? "blank" : pd_nameTV.getText().toString();
+    String descriptionInput = pd_descriptionTV.getText().toString().equals("") ? "blank" : pd_descriptionTV.getText().toString();
+    String categoryInput = pd_categoryTV.getText().toString().equals("") ? "blank" : pd_categoryTV.getText().toString();
+    String addressTitleInput = pd_addressTitleTV.getText().toString().equals("") ? "blank" : pd_addressTitleTV.getText().toString();
+    String addressStreetInput = pd_addressStreetTV.getText().toString().equals("") ? "blank" : pd_addressStreetTV.getText().toString();
+    String elevationInput = pd_elevationTV.getText().toString().equals("") ? "0" : pd_elevationTV.getText().toString();
+    String latitudeInput = pd_latitudeTV.getText().toString().equals("") ? "0" : pd_latitudeTV.getText().toString();
+    String longitudeInput = pd_longitudeTV.getText().toString().equals("") ? "0" : pd_longitudeTV.getText().toString();
+
+    PlaceDescription pd = new PlaceDescription(
+            nameInput, descriptionInput, categoryInput, addressTitleInput, addressStreetInput,
+            Integer.parseInt(elevationInput), Double.parseDouble(latitudeInput), Double.parseDouble(longitudeInput)
+    );
+    String insert = "insert into places values (" + pd.toSQLString() + ");";
+    placeDB.execSQL(insert);
+
+    db.close();
+    Intent i = new Intent();
+    i.putExtra("Places", collection);
+    this.setResult(RESULT_OK,i);
+    finish();
   }
 
   // create the menu items for this activity, placed in the action bar.

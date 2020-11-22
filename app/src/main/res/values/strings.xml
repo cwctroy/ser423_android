@@ -22,7 +22,6 @@
 
     <!--  Homepage -->
     <string name="app_name">ser423_android</string>
-    <string name="show_sample">Show sample</string>
 
     <!-- View titles -->
     <string name="location_list_header">Locations</string>
@@ -42,5 +41,8 @@
     <string name="elevation">Elevation</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
+
+    <!-- Button Labels -->
+    <string name="save">Save</string>
 
 </resources>
